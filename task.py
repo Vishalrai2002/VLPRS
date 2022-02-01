@@ -9,6 +9,11 @@ path= 'C:/Users/Shambhu Jha/Desktop/DSA/project/vlprs/static'
 app= Flask(__name__)
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
 vehicles= []
+file= open('imp.txt', 'r')
+for line in file:
+    vehicles.append(line + "\n")
+file.close()
+
 
 
 cascade= cv2.CascadeClassifier("haarcascade_russian_plate_number.xml")
@@ -37,8 +42,11 @@ def extract_num(img_name):
         # path = os.path.join(parent_dir, read)
         read = ''.join(e for e in read if e.isalnum())
         # os.mkdir(path)
-        print(read)
+        # print(read)
         vehicles.append(read)
+        file = open('imp.txt','a')
+        file.write(read+ "\n")
+        file.close()
         stat = read[0:2]
         print(read)
         cv2.rectangle(img, (x,y), (x+w, y+h), (51,51,255), 2)
