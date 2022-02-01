@@ -5,6 +5,7 @@ import numpy as np
 import os
 
 path= 'C:/Users/Shambhu Jha/Desktop/DSA/project/vlprs/static'
+
 app= Flask(__name__)
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
 vehicles= []
@@ -44,11 +45,11 @@ def extract_num(img_name):
         cv2.rectangle(img, (x, y - 40), (x + w, y),(51,51,255) , -1)
         cv2.putText(img,read, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
         str= read+ ".jpg"
-        # cv2.imshow('PLate',plate)
+        cv2.imshow('PLate',plate)
         # Save & display result image
         cv2.imwrite(os.path.join(path , str), plate)
 
-    # cv2.imshow("Result", img)
+    cv2.imshow("Result", img)
     cv2.imwrite('result.jpg',img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
