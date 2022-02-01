@@ -1,10 +1,14 @@
+from flask import Flask, render_template
 import cv2
 import pytesseract
 import numpy as np
 import os
 
-
+path= 'C:/Users/Shambhu Jha/Desktop/DSA/project/vlprs/static'
+app= Flask(__name__)
 pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files (x86)\Tesseract-OCR\tesseract.exe'
+vehicles= []
+
 
 cascade= cv2.CascadeClassifier("haarcascade_russian_plate_number.xml")
 # states={"AN":"Andaman and Nicobar","AP":"Andhra Pradesh","AR":"Arunachal Pradesh","AS":"Assam","BR":"Bihar","CH":"Chandigarh","DN":"Dadra and Nagar Haveli","DD":"Daman and Diu","DL":"Delhi","GA":"Goa","GJ":"Gujarat",
@@ -33,21 +37,38 @@ def extract_num(img_name):
         read = ''.join(e for e in read if e.isalnum())
         # os.mkdir(path)
         print(read)
+        vehicles.append(read)
         stat = read[0:2]
         print(read)
         cv2.rectangle(img, (x,y), (x+w, y+h), (51,51,255), 2)
         cv2.rectangle(img, (x, y - 40), (x + w, y),(51,51,255) , -1)
         cv2.putText(img,read, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255, 255, 255), 2)
         str= read+ ".jpg"
-        cv2.imshow('PLate',plate)
+        # cv2.imshow('PLate',plate)
         # Save & display result image
-        cv2.imwrite(str, plate)
+        cv2.imwrite(os.path.join(path , str), plate)
 
-    cv2.imshow("Result", img)
+    # cv2.imshow("Result", img)
     cv2.imwrite('result.jpg',img)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
 # Let's make a function call
 extract_num('./t30.jpeg')
+
 # print("Success")
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+
+@app.route("/<vehID>")
+def veh_details(vehID):
+    return render_template("details.html", plate=vehID)
+    
+
+
+
+if __name__== "__main__":
+    app.run(debug=True)
