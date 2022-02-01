@@ -2,4 +2,32 @@
 {% block title %}List{% endblock %}
 {% block content %}
 
+{% for num in vehicles %}
+<meta id="image" data-playlist="{{ num }}">
+
+
+
+ <script>
+        var Pic = ""
+  
+        function displayImage(pic) {
+            let divLocation = document.getElementById("imgDiv");
+            let imgElement = document.createElement("img");
+            imgElement.src = pic
+            divLocation.append(imgElement);
+        }
+  
+      var ans = $('#image').data("num");
+        Pic = "./static/"+ans+".jpg";
+        console.log(Pic);
+        // var s= ({{ num | tojson }});
+        // console.log(s);
+
+        displayImage(Pic);
+    </script>
+<p>{{num}}</p>
+<!-- <img src="./static/" -->
+{% endfor %}
+
+
 {% endblock %}
